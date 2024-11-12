@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route, useParams } from 'react-router-dom';
+import DashboardComponent from './components/dashboardComponent';
+import JobsDashboard from './pages/jobs';
+import CandidatesPage from './pages/[jobId]/candidates/candidates';
+import CreateAssessmentPage from './pages/[jobId]/assessment/create-assignment';
+import { SidebarProvider } from './context/SidebarContext';
+import { JobProvider } from './context/JobContext';
+import { AssignmentProvider } from './context/AssignmentContext';
+import ViewAssignment from './pages/[jobId]/assessment/view-assignment';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <SidebarProvider>
+      <JobProvider>
+        <AssignmentProvider>
+          <Router>
+            <Routes>
+              <Route path="/dashboard" element={<JobsDashboard />} />
+              <Route path="/dashboard/jobs/:jobId/candidates" element={<CandidatesPage />} />
+              <Route path="/dashboard/jobs/:jobId/assessment" element={<CreateAssessmentPage />} />
+              <Route path="/dashboard/jobs/:jobId/view-assessment" element={<ViewAssignment />} />
+            </Routes>
+          </Router>
+        </AssignmentProvider>
+      </JobProvider>
+    </SidebarProvider>
   );
 }
 
